@@ -1,2 +1,3 @@
-# algorithms_portfolio
-PROG 366 Portfolio
+# PROG 366: Algorithms - Portfolio
+
+Week 2
