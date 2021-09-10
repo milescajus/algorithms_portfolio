@@ -3,9 +3,9 @@ using System;
 class Week2
 {
 	// O(1)
-	public int ConstantTime ()
+	public int ConstantTime (int[] a)
 	{
-		return 1;
+		return a[0];
 	}
 
 	// O(n)
