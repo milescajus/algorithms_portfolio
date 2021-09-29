@@ -6,3 +6,6 @@
 ## Changelog
 Week 2
 - added Assignment I: Big O Code Examples
+
+Week 3
+- added Group 03 breakout assignment as PDF
