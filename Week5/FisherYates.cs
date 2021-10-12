@@ -11,6 +11,7 @@ namespace Algorithms {
 
             var rnd = new Random();
 
+            // terminate loop at i == 0 so as not to swap objs[0] and objs[1] twice
             for (int i = objs.Length - 1; i > 0; i--) {
                 objs.SwapAtIndices(i, rnd.Next(i + 1)); // Random.Next(max) is non-inclusive
 
