@@ -15,6 +15,8 @@ $ mono Program.exe data.csv
 B D G C F A E
 ```
 
+The `Shuffle()` and `SwapAtIndices()` methods are extensions to the `object[]` type in C#. The former, and this variation of the Fisher-Yates shuffle generally, works by iterating backwards through an object array, randomly generating an index less than or equal to the current loop index, and swaps the objects at those respective indices, terminating when the loop reaches 0 non-inclusively (i.e. the first element of the array does not get swapped back as the second element will have already been swapped with it and this would reverse the previous swap).
+
 ## Changelog
 Week 2
 - added Assignment I: Big O Code Examples
