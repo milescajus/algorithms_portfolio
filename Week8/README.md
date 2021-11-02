@@ -26,11 +26,11 @@ Dictionary:
 	Key: 871	Value: 871
 	Key: 100	Value: 100
 
-Stack.Pop():
-100
+Stack peek: 100
+Top of stack is end of array: True
 
-Queue.Dequeue():
-1231
+Queue peek: 1231
+First out of queue is start of array: True
 ```
 
 ### Information about Data Structures

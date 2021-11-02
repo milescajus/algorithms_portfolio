@@ -24,19 +24,25 @@ class DataStructures {
         var myStack = StrToIntStack(s);
         var myQueue = StrToIntQueue(s);
 
+        // Print initial string input
         Console.WriteLine("\nString Input:" + "\n" + s);
 
+        // Print each element in the array by accessing their indices
         Console.WriteLine("\nArray:");
-        foreach (int n in myArr) { Console.Write(n + " "); }
+        for (int i = 0; i < myArr.Length; i++) { Console.Write(myArr[i] + " "); }
 
+        // Print each key, value pair in the dictionary by iterating through
+        // the keys and accessing the value at that key with the Dictionary[Key] syntax
         Console.WriteLine("\n\nDictionary:");
         foreach (string key in myDict.Keys) { Console.WriteLine("\tKey: " + key + "\tValue: " + myDict[key]); }
 
-        Console.WriteLine("\nStack.Pop():");
-        Console.WriteLine(myStack.Pop());
+        // Print the value at the top of the stack, which should be the last element of the array
+        Console.WriteLine("\nStack peek: " + myStack.Peek());
+        Console.WriteLine("Top of stack is end of array: " + (myStack.Pop() == myArr[myArr.Length - 1]));
 
-        Console.WriteLine("\nQueue.Dequeue():");
-        Console.WriteLine(myQueue.Dequeue());
+        // Print the next value of the queue, which should be the first element of the array
+        Console.WriteLine("\nQueue peek: " + myQueue.Peek());
+        Console.WriteLine("First out of queue is start of array: " + (myQueue.Dequeue() == myArr[0]));
     }
 
     public static int[] StrToIntArray(string input) {
