@@ -33,10 +33,10 @@ Queue peek: 1231
 First out of queue is start of array: True
 ```
 
-### Information about Data Structures
+### Information about Data Structures (same as internal documentation in `DataStructures.cs`)
 *Array*
 
-An array is (traditionally) a contiguous block of memory with a pre-defined length, which cannot be changed or resized. It is used to store a series of elements of the same pre-defined type which may be accessed by index or by looping through the array. These are useful for any unchanging sequence of elements, or for preserving order, but are costly to modify as this involves copying the array to 'resize' it, or shifting the elements to avoid gaps where elements have been swapped or removed.
+An array is (traditionally) a contiguous block of memory with a pre-defined length, which cannot be changed or resized. It is used to store a series of elements of the same pre-defined type which may be accessed by index or by looping through the array. These are useful for any unchanging sequence of elements, or for preserving order, but are costly to modify as this involves copying the array to 'resize' it, or shifting the elements to avoid gaps where elements have been swapped or removed. The other data structures used in this class do not have this fixed-size limitation, but potentially require more overhead (as such consuming more than O(n) space) to keep track of the abstracted relationships.
 
 *Map*
 
@@ -44,7 +44,7 @@ A map (implemented here as a Dictionary) is an abstract data structure that asso
 
 *Stack*
 
-A stack is an abstract data structure that implements the LIFO concept, where the last element added to the stack is the first to be retrieved.  Elements can be pushed to the stack, and the stack can be popped, returning the element at the top of the stack until the stack is empty. These are useful for verifying the balance or symmetry of elements, e.g. when checking for matching parentheses in a code editor, or for reversing a sequence of elements.
+A stack is an abstract data structure that implements the LIFO concept, where the last element added to the stack is the first to be retrieved.  Elements can be pushed to the stack, and the stack can be popped, returning the element at the top of the stack until the stack is empty. These are useful for verifying the balance or symmetry of elements, e.g. when checking for matching parentheses in a code editor, for reversing a sequence of elements, or for any situation with inverse priority (i.e. the most recent elements are the most relevant).
 
 *Queue*
 

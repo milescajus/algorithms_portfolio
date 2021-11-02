@@ -55,6 +55,9 @@ class DataStructures {
          * or for preserving order, but are costly to modify as this
          * involves copying the array to 'resize' it, or shifting the elements
          * to avoid gaps where elements have been swapped or removed.
+         * The other data structures used in this class do not have this fixed-size limitation,
+         * but potentially require more overhead (as such consuming more than O(n) space)
+         * to keep track of the abstracted relationships.
          */
 
         string[] sa = input.Split(";");
@@ -98,9 +101,10 @@ class DataStructures {
          * Elements can be pushed to the stack, and the stack can be popped, returning
          * the element at the top of the stack until the stack is empty.
          *
-         * These are useful for verifying the balance or symmetry of elements, e.g. when
-         * checking for matching parentheses in a code editor, or for reversing a sequence
-         * of elements.
+         * These are useful for verifying the balance or symmetry of elements,
+         * e.g. when checking for matching parentheses in a code editor,
+         * for reversing a sequence of elements, or for any situation with inverse priority
+         * (i.e. the most recent elements are the most relevant).
          */
 
         string[] sa = input.Split(";");
