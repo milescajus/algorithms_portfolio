@@ -24,13 +24,18 @@ class DataStructures {
         var myStack = StrToIntStack(s);
         var myQueue = StrToIntQueue(s);
 
+        Console.WriteLine("\nString Input:" + "\n" + s);
+
+        Console.WriteLine("\nArray:");
         foreach (int n in myArr) { Console.Write(n + " "); }
-        Console.WriteLine();
 
-        foreach (string key in myDict.Keys) { Console.WriteLine("Key: " + key + "\tValue: " + myDict[key]); }
-        Console.WriteLine();
+        Console.WriteLine("\n\nDictionary:");
+        foreach (string key in myDict.Keys) { Console.WriteLine("\tKey: " + key + "\tValue: " + myDict[key]); }
 
+        Console.WriteLine("\nStack.Pop():");
         Console.WriteLine(myStack.Pop());
+
+        Console.WriteLine("\nQueue.Dequeue():");
         Console.WriteLine(myQueue.Dequeue());
     }
 
@@ -47,9 +52,9 @@ class DataStructures {
          */
 
         string[] sa = input.Split(";");
-        int[] ia = new int[sa.Length];
+        int[] ia = new int[sa.Length - 1];              // int array can be one element shorter as sa[-1] is assumed to be ""
 
-        for (int i = 0; i < sa.Length - 1; i++) {       // loop ignores last element as it is assumed to be empty
+        for (int i = 0; i < ia.Length; i++) {
             ia[i] = Int32.Parse(sa[i]);
         }
 
