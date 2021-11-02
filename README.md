@@ -12,3 +12,6 @@ Week 3
 
 Week 5
 - added Fisher-Yates shuffle
+
+Week 8
+- added Data Structures assignment, demonstrating arrays, maps, stacks, and queues
