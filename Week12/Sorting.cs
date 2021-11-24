@@ -204,9 +204,9 @@ class Sorting {
         int end = A.Length - 1;
 
         while (end > 0) {
-            Swap(A, 0, end);
-            end--;
-            SiftDown(A, 0, end);
+            Swap(A, 0, end);                    // swap largest element of heap to end of array
+            end--;                              // iterate down the heap
+            SiftDown(A, 0, end);                // rebuild heap each time the end changes
         }
 
         if (debug) Print(A);
@@ -216,6 +216,13 @@ class Sorting {
 
     public static void Heapify(int[] A, int count)
     {
+        /* Helper function to rearrange the elements
+         * in an array of type int until an upper bound
+         * to form a heap structure, which is simply
+         * a binary tree where each child is smaller
+         * than or equal to its parent
+         */
+
         int start = HParent(count - 1);
 
         while (start >= 0) {
@@ -226,25 +233,29 @@ class Sorting {
 
     public static void SiftDown(int[] A, int start, int end)
     {
+        /* The actual heap-forming function
+         */
+
         int root = start;
 
         while (HLeftChild(root) <= end) {
             int child = HLeftChild(root);
-            int swap = root;
+            int swap = root;                    // to keep track of the element to be swapped
 
             if (A[swap] < A[child])
                 swap = child;
             if (child + 1 <= end && A[swap] < A[child + 1])
                 swap = child + 1;
-            if (swap == root)
+            if (swap == root)                   // the root node is already the largest
                 return;
             else {
-                Swap(A, root, swap);
+                Swap(A, root, swap);            // swap the largest node into the root position
                 root = swap;
             }
         }
     }
 
+    // The following three methods simply calculate the parent/child indices for the heap
     public static int HParent(int i) { return (i - 1) / 2; }
     public static int HLeftChild(int i) { return 2 * i + 1; }
     public static int HRightChild(int i) { return 2 * i + 2; }
@@ -272,9 +283,9 @@ class Sorting {
          */
 
         if (lo < hi) {
-            int p = Partition(A, lo, hi);
-            QS(A, lo, p);
-            QS(A, p + 1, hi);
+            int p = Partition(A, lo, hi);   // determine the split point for the recursive function calls
+            QS(A, lo, p);                   // left partition
+            QS(A, p + 1, hi);               // right partition
         }
     }
 
@@ -325,12 +336,13 @@ class Sorting {
          * based on Rod Stephens' pseudocode
          */
 
-        if (start == end) return;
-        int midpoint = (start + end) / 2;
+        if (start == end) return;               // parition is of size 1, no sorting needed
+        int midpoint = (start + end) / 2;       // again C# automatically uses floor for int division
 
-        MS(A, scratch, start, midpoint);
-        MS(A, scratch, midpoint + 1, end);
+        MS(A, scratch, start, midpoint);        // lower half
+        MS(A, scratch, midpoint + 1, end);      // upper half
 
+        // merge the two sorted halves
         int left_index = start;
         int right_index = midpoint + 1;
         int scratch_index = left_index;
@@ -346,6 +358,7 @@ class Sorting {
             scratch_index++;
         }
 
+        // copy remainder of the two halves
         for (int i = left_index; i <= midpoint; i++) {
             scratch[scratch_index] = A[i];
             scratch_index++;
@@ -356,6 +369,7 @@ class Sorting {
             scratch_index++;
         }
 
+        // copy sorted elements back from scratch array to main array
         for (int i = start; i <= end; i++) {
             A[i] = scratch[i];
         }
