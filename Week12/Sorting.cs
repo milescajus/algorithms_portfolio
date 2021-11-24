@@ -10,71 +10,82 @@ using System.Diagnostics;
 using System.Collections.Generic;
 
 class Sorting {
-    public static void Main(string[] args) {
+    public static void Main(string[] args)
+    {
         /* Program reads a fixed text file
          * and parses it into an array of type int
          * and sorts it with various different algorithms
          */
 
+        // Initialize variables
         var stopwatch = new Stopwatch();
-
-        using var reader = new StreamReader("scores.txt");
+        bool debug = false;
         int[] data = new int[474];
+        string[] tests = {"Bubble Sort",
+                          "Insertion Sort",
+                          "Selection Sort",
+                          "Heap Sort",
+                          "Quick Sort",
+                          "Merge Sort"};
+
+        // Determine debug flag
+        if (args.Length != 0) {
+            debug = args[0] == "/debug";
+        }
+
+        // Parse input data
+        using var reader = new StreamReader("scores.txt");
 
         for (int i = 0; i < 474; i++) {
             string s = reader.ReadLine();
             data[i] = Int32.Parse(s);
         }
 
-        if (args.Length != 0 && args[0] == "/debug") {
-            Console.WriteLine("Data:");
-            foreach (int n in data) { Console.Write($"{n} "); }
-            Console.WriteLine("\n");
-        }
+        if (debug) Print(data); // print unsorted data if debug flag used
 
-        string[] tests = {"Bubble Sort", "Insertion Sort", "Selection Sort", "Heap Sort", "Quick Sort", "Merge Sort"};
-
+        // Execute sorting tests
         foreach (string test in tests) {
-            bool verified = false;
+            bool verified;
             int[] sorted;
+
             stopwatch = Stopwatch.StartNew();
 
             switch(test) {
                 case "Bubble Sort":
-                    sorted = BubbleSort(data);
-                    verified = Verify(sorted);
+                    sorted = BubbleSort(data, debug);
                     break;
                 case "Insertion Sort":
-                    sorted = InsertionSort(data);
-                    verified = Verify(sorted);
+                    sorted = InsertionSort(data, debug);
                     break;
                 case "Selection Sort":
-                    sorted = SelectionSort(data);
-                    verified = Verify(sorted);
+                    sorted = SelectionSort(data, debug);
                     break;
                 case "Heap Sort":
-                    sorted = HeapSort(data);
-                    verified = Verify(sorted);
+                    sorted = HeapSort(data, debug);
                     break;
                 case "Quick Sort":
-                    sorted = QuickSort(data);
-                    verified = Verify(sorted);
+                    sorted = QuickSort(data, debug);
                     break;
                 case "Merge Sort":
-                    sorted = MergeSort(data);
-                    verified = Verify(sorted);
+                    sorted = MergeSort(data, debug);
+                    break;
+                default:
+                    sorted = data;
                     break;
             }
 
             stopwatch.Stop();
+            
+            verified = Verify(sorted);
 
-            Console.WriteLine($"{test}:\t{stopwatch.ElapsedMilliseconds} ms\t{verified}");
+            Console.WriteLine($"{test}:\t{stopwatch.Elapsed.TotalMilliseconds} ms\t{verified}");
         }
     }
 
-    public static bool Verify(int[] input) {
-        /* Confirm that an array of type int
-         * is indeed sorted correctly
+    public static bool Verify(int[] input)
+    {
+        /* Helper function to confirm that
+         * an array of type int is sorted
          */
 
         for (int i = 1; i < input.Length; i++) {
@@ -87,9 +98,10 @@ class Sorting {
         return true;
     }
 
-    public static void Swap(int[] input, int i, int j) {
-        /* Swap elements at indices i and j
-         * in array of type int input
+    public static void Swap(int[] input, int i, int j)
+    {
+        /* Helper function to swap elements
+         * at indices i and j in array of type int
          */
 
         var tmp = input[i];
@@ -97,14 +109,39 @@ class Sorting {
         input[j] = tmp;
     }
 
-    public static void Heapify(int[] input) {
-        
+    public static void Print(int[] input)
+    {
+        /* Helper function to print
+         * all elements in array of type int
+         */
+
+        Console.WriteLine();
+        foreach (int n in input) { Console.Write($"{n} "); }
+        Console.WriteLine("\n");
     }
 
-    public static int[] BubbleSort(int[] input, bool debug=false) {
+    public static void Heapify(int[] input, int count)
+    {
+        /* Helper function to build heap
+         * from array of type int
+         */
+
+        for (int i = 0; i < count; i++) {
+            int index = i;
+            while (index != 0) {
+                int parent = (index - 1) / 2;
+                if (input[index] <= input[parent]) break;
+                Swap(input, index, parent);
+                index = parent;
+            }
+        }
+    }
+
+    public static int[] BubbleSort(int[] input, bool debug=false)
+    {
         /* Bubble Sort
-         * Runtime: O(n) best case, O(n^2) worst case
-         * Memory: O(1)
+         * Best Runtime: O(n)
+         * Worst Runtime: O(n^2)
          */
 
         int[] A = (int[]) input.Clone();
@@ -118,21 +155,18 @@ class Sorting {
                     sorted = false;                     // have found proof of unsorted
                 }
             }
-
         }
 
-        if (debug) {
-            foreach (int n in A) { Console.Write($"{n} "); }
-            Console.WriteLine("\n");
-        }
+        if (debug) Print(A);
 
         return A;
     }
 
-    public static int[] InsertionSort(int[] input, bool debug=false) {
+    public static int[] InsertionSort(int[] input, bool debug=false)
+    {
         /* Insertion Sort
-         * Runtime: O(n) best case, O(n^2) worst case
-         * Memory: O(1) to O(n)
+         * Best Runtime: O(n)
+         * Worst Runtime: O(n^2)
          */
 
         int[] A = (int[]) input.Clone();
@@ -145,18 +179,16 @@ class Sorting {
             }
         }
 
-        if (debug) {
-            foreach (int n in A) { Console.Write($"{n} "); }
-            Console.WriteLine("\n");
-        }
+        if (debug) Print(A);
 
         return A;
     }
 
-    public static int[] SelectionSort(int[] input, bool debug=false) {
+    public static int[] SelectionSort(int[] input, bool debug=false)
+    {
         /* Selection Sort
-         * Runtime: O(n^2) best, average, and worst case
-         * Memory: O(1)
+         * Best Runtime: O(n^2)
+         * Worst Runtime: O(n^2)
          */
 
         int[] A = (int[]) input.Clone();
@@ -169,66 +201,141 @@ class Sorting {
             }
         }
 
-        if (debug) {
-            foreach (int n in A) { Console.Write($"{n} "); }
-            Console.WriteLine("\n");
-        }
+        if (debug) Print(A);
 
         return A;
     }
 
-    public static int[] HeapSort(int[] input, bool debug=false) {
+    public static int[] HeapSort(int[] input, bool debug=false)
+    {
         /* Heap Sort
-         * Runtime: O(n log n) best, average, and worst case
-         * Memory: O(1)
+         * Best Runtime: O(n log n)
+         * Worst Runtime: O(n log n)
          */
 
         int[] A = (int[]) input.Clone();
 
-        Heapify(A);
+        Heapify(A, A.Length);
 
         for (int i = A.Length - 1; i >= 0; i--) {
             Swap(A, 0, i);
-            Heapify(A);
+            Heapify(A, A.Length - i);
         }
 
-        if (debug) {
-            foreach (int n in input) { Console.Write($"{n} "); }
-            Console.WriteLine("\n");
-        }
+        if (debug) Print(A);
 
         return A;
     }
 
-    public static int[] QuickSort(int[] input, bool debug=false) {
-        /* Bubble Sort
-         * Runtime: O(n^2) average and worst case
-         * Memory: O(1)
+    public static int[] QuickSort(int[] input, bool debug=false)
+    {
+        /* Quick Sort
+         * Best Runtime: O(n log n)
+         * Worst Runtime: O(n^2)
          */
 
         int[] A = (int[]) input.Clone();
 
-        if (debug) {
-            foreach (int n in input) { Console.Write($"{n} "); }
-            Console.WriteLine("\n");
-        }
+        QS(A, 0, A.Length - 1);
+
+        if (debug) Print(A);
 
         return A;
     }
 
-    public static int[] MergeSort(int[] input, bool debug=false) {
-        /* Bubble Sort
-         * Runtime: O(n^2) average and worst case
-         * Memory: O(1)
+    public static void QS(int[] A, int lo, int hi)
+    {
+        /* Actual Quicksort algorithm function
+         * called recursively for each partition
+         */
+
+        if (lo < hi) {
+            int p = Partition(A, lo, hi);
+            QS(A, lo, p);
+            QS(A, p + 1, hi);
+        }
+    }
+
+    public static int Partition(int[] A, int lo, int hi)
+    {
+        /* Hoare's partition scheme:
+         * choose median as pivot,
+         * approach pivot from both sides
+         * until value is on wrong side,
+         * swap values to correct placement
+         */
+
+        int pivot = A[(lo + hi) / 2];   // C# automatically chooses floor value for int
+        int i = lo - 1;                 // left pointer
+        int j = hi + 1;                 // right pointer
+
+        while(true) {
+            do { i++; } while (A[i] < pivot);
+            do { j--; } while (A[j] > pivot);
+
+            if (i >= j) return j;       // i overtook j, returns new bounds for recursive QS
+
+            Swap(A, i, j);              // swap elements on wrong side of pivot
+        }
+    }
+
+    public static int[] MergeSort(int[] input, bool debug=false)
+    {
+        /* Merge Sort
+         * Best Runtime: O(n log n)
+         * Worst Runtime: O(n log n)
          */
 
         int[] A = (int[]) input.Clone();
 
-        if (debug) {
-            foreach (int n in input) { Console.Write($"{n} "); }
-            Console.WriteLine("\n");
-        }
+        MS(A, new int[A.Length], 0, A.Length - 1);
+
+        if (debug) Print(A);
 
         return A;
+    }
+
+    public static void MS(int[] A, int[] scratch, int start, int end)
+    {
+        /* Actual Merge Sort algorithm function
+         * called recursively for each partition
+         * includes merge step as well as division
+         * based on Rod Stephens' pseudocode
+         */
+
+        if (start == end) return;
+        int midpoint = (start + end) / 2;
+
+        MS(A, scratch, start, midpoint);
+        MS(A, scratch, midpoint + 1, end);
+
+        int left_index = start;
+        int right_index = midpoint + 1;
+        int scratch_index = left_index;
+
+        while (left_index <= midpoint && right_index <= end) {
+            if (A[left_index] <= A[right_index]) {
+                scratch[scratch_index] = A[left_index];
+                left_index++;
+            } else {
+                scratch[scratch_index] = A[right_index];
+                right_index++;
+            }
+            scratch_index++;
+        }
+
+        for (int i = left_index; i <= midpoint; i++) {
+            scratch[scratch_index] = A[i];
+            scratch_index++;
+        }
+
+        for (int i = right_index; i <= end; i++) {
+            scratch[scratch_index] = A[i];
+            scratch_index++;
+        }
+
+        for (int i = start; i <= end; i++) {
+            A[i] = scratch[i];
+        }
     }
 }
