@@ -62,30 +62,20 @@ End Selectionsort
 ### Description
 ### Pseudocode
 ```
-MakeHeap(Data: values[])
-    // Add each item to the heap one at a time.
-    For i = 0 To <length of values> - 1
-        // Start at the new item, and work up to the root.
-        Integer: index = i
-
-While (index != 0)
-            // Find the parent's index.
-            Integer: parent = (index - 1) / 2
+Heapsort(Data: values)
+    <Turn the array into a heap.>
  
-            // If child <= parent, we're done, so
-            // break out of the While loop.
-            If (values[index] <= values[parent]) Then Break
+    For i = <length of values> - 1 To 0 Step -1
+        // Swap the root item and the last item.
+        Data: temp = values[0]
+        values[0] = values[i]
+        values[i] = temp
  
-            // Swap the parent and child.
-            Data: temp = values[index]
-            values[index] = values[parent]
-            values[parent] = temp
- 
-            // Move to the parent.
-            index = parent
-        End While
+        <Consider the item in position i to be removed from the heap,
+         so the heap now holds i - 1 items. Push the new root value
+         down into the heap to restore the heap property.>
     Next i
-End MakeHeap
+End Heapsort
 ```
 
 
