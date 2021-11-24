@@ -15,3 +15,6 @@ Week 5
 
 Week 8
 - added Data Structures assignment, demonstrating arrays, maps, stacks, and queues
+
+Week 12
+- added Sorting assignment, demonstrating various sorting algorithms
