@@ -105,7 +105,8 @@ algorithm quicksort(A, lo, hi) is
 ## Merge Sort
 ### Description
 ### Pseudocode
-```Mergesort(Data: values[], Data: scratch[], Integer: start, Integer: end)
+```
+Mergesort(Data: values[], Data: scratch[], Integer: start, Integer: end)
     // If the array contains only one item, it is already sorted.
 
 If (start == end) Then Return
