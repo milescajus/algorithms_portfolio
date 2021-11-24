@@ -1,6 +1,10 @@
 # Sorting Algorithms
+See code comments for asymptotic analysis.
 ## Bubble Sort
 ### Description
+Bubble Sort passes through the array and compare adjacent elements, swapping them if the lower element is larger than the upper element in the pair. This is repeated until the larger element has 'bubbled' its way to its correctly sorted position.
+
+This procedure loops until the array is passed through with no swaps occurring.
 ### Pseudocode
 ```
 Bubblesort(Data: values[])
@@ -30,6 +34,9 @@ End Bubblesort
 
 ## Insertion Sort
 ### Description
+Much like how people sort cards in their hand when playing a card game, the index represents a separation between the sorted and unsorted segments of the array. For each element considered, the sorted section is looped through until the appropriate place is found for that element.
+
+Like Bubble Sort, this algorithm checks for unsorted adjacent pairs, but maintains sorting at the start of the array, and also avoids the many repeated scans of the array which significantly slow down Bubble Sort.
 ### Pseudocode
 ```
 Insertionsort(Data: values[])
@@ -46,6 +53,7 @@ End Insertionsort
 
 ## Selection Sort
 ### Description
+Like Insertion Sort, this algorithm is well suited for small arrays. It also functions similarly, albeit somewhat reversed, by finding the smallest not-yet-sorted element in the array and swapping it with the currently considered element (the end of the sorted portion of the array which lies at the start as with Insertion Sort).
 ### Pseudocode
 ```
 Selectionsort(Data: values[])
@@ -58,8 +66,11 @@ End Selectionsort
 ```
 
 
-## HeapSort
+## Heap Sort
 ### Description
+This is a rather different algorithm, relying more on the creation of the heap data structure and using its inherent properties to sort the input array with a relatively minimal algorithm. Nevertheless, getting the input array into the heap structure is complex, despite the conceptual elegance.
+
+A heap is a type of ordered binary tree, where each node is smaller than its parents. By arranging the array into a heap (where the root, often the maximum value, lies at `A[0]` and the indices of the left and right children of any given node are calculated as `2 * i + 1` and `2 * i + 2` respectively), the sorting is simply performed by swapping the root to the end of the array and working down the heap/tree structure to place the elements backwards in decreasing size, resulting in a sorted array. This requires repeatedly repairing the heap structure using a `heapify()` method.
 ### Pseudocode
 ```
 procedure heapsort(a, count) is
@@ -117,8 +128,11 @@ procedure siftDown(a, start, end) is
 ```
 
 
-## Quick Sort
+## Quicksort
 ### Description
+One of the major divide-and-conquer algorithms, Quicksort recursively breaks down the array by choosing a 'pivot' element and comparing the values of the elements either side of the pivot, swapping them if they are on the 'wrong side', i.e. are unsorted relative to the pivot.
+
+As each partition of the array is recursively further partitioned, the swapping around the pivot eventually results in a completely sorted array. This algorithm was consistently the fastest in my measurements.
 ### Pseudocode
 ```
 // Sorts a (portion of an) array, divides it into partitions, then sorts those
@@ -158,6 +172,9 @@ algorithm partition(A, lo, hi) is
 
 ## Merge Sort
 ### Description
+Similarly to Quicksort, this divide-and-conquer algorithm also recursively breaks down the array, but instead simply compares element pairs at the deepest level of recursion and relies on merging these subdivided partitions correctly to maintain order.
+
+As this is recursive, the actual swapping takes place with minimal elements and as the recursion 'flows' back upwards the array becomes fully sorted. This was the second-fastest algorithm in my measurements, after Quicksort.
 ### Pseudocode
 ```
 Mergesort(Data: values[], Data: scratch[], Integer: start, Integer: end)

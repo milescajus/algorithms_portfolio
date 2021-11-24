@@ -156,9 +156,9 @@ class Sorting {
         int[] A = (int[]) input.Clone();
         
         for (int i = 1; i < A.Length; i++) {
-            for (int j = i; j > 0; j--) {
-                if (A[j] < A[j - 1]) {
-                    Swap(A, j, j - 1);
+            for (int j = i; j > 0; j--) {               // work back from index to find place for element
+                if (A[j] < A[j - 1]) {                  // lookbehind variant
+                    Swap(A, j, j - 1);                  // insert like a playing card
                 }
             }
         }
