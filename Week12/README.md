@@ -12,7 +12,7 @@ Bubblesort(Data: values[])
         // Search the array for adjacent items that are out of order.
         For i = 0 To <length of values> - 1
 
-// See if items i and i - 1 are out of order.
+	// See if items i and i - 1 are out of order.
             If (values[i] < values[i - 1]) Then
                 // Swap them.
                 Data: temp = values[i]
@@ -62,20 +62,58 @@ End Selectionsort
 ### Description
 ### Pseudocode
 ```
-Heapsort(Data: values)
-    <Turn the array into a heap.>
+procedure heapsort(a, count) is
+    input: an unordered array a of length count
  
-    For i = <length of values> - 1 To 0 Step -1
-        // Swap the root item and the last item.
-        Data: temp = values[0]
-        values[0] = values[i]
-        values[i] = temp
- 
-        <Consider the item in position i to be removed from the heap,
-         so the heap now holds i - 1 items. Push the new root value
-         down into the heap to restore the heap property.>
-    Next i
-End Heapsort
+    (Build the heap in array a so that largest value is at the root)
+    heapify(a, count)
+
+    (The following loop maintains the invariants that a[0:end] is a heap and every element
+     beyond end is greater than everything before it (so a[end:count] is in sorted order))
+    end ← count - 1
+    while end > 0 do
+        (a[0] is the root and largest value. The swap moves it in front of the sorted elements.)
+        swap(a[end], a[0])
+        (the heap size is reduced by one)
+        end ← end - 1
+        (the swap ruined the heap property, so restore it)
+        siftDown(a, 0, end)(Put elements of 'a' in heap order, in-place)
+
+procedure heapify(a, count) is
+    (start is assigned the index in 'a' of the last parent node)
+    (the last element in a 0-based array is at index count-1; find the parent of that element)
+    start ← iParent(count-1)
+    
+    while start ≥ 0 do
+        (sift down the node at index 'start' to the proper place such that all nodes below
+         the start index are in heap order)
+        siftDown(a, start, count - 1)
+        (go to the next parent node)
+        start ← start - 1
+    (after sifting down the root all nodes/elements are in heap order)
+
+(Repair the heap whose root element is at index 'start', assuming the heaps rooted at its children are valid)
+procedure siftDown(a, start, end) is
+    root ← start
+
+    while iLeftChild(root) ≤ end do    (While the root has at least one child)
+        child ← iLeftChild(root)   (Left child of root)
+        swap ← root                (Keeps track of child to swap with)
+
+        if a[swap] < a[child] then
+            swap ← child
+        (If there is a right child and that child is greater)
+        if child+1 ≤ end and a[swap] < a[child+1] then
+            swap ← child + 1
+        if swap = root then
+            (The root holds the largest element. Since we assume the heaps rooted at the
+             children are valid, this means that we are done.)
+            return
+        else
+            swap(a[root], a[swap])
+            root ← swap          (repeat to continue sifting down the child now)
+
+
 ```
 
 
@@ -83,12 +121,38 @@ End Heapsort
 ### Description
 ### Pseudocode
 ```
-algorithm quicksort(A, lo, hi) is
-    if lo < hi then
-        p := pivot(A, lo, hi)
-        left, right := partition(A, p, lo, hi)  // note: multiple return values
-        quicksort(A, lo, left - 1)
-        quicksort(A, right + 1, hi)
+// Sorts a (portion of an) array, divides it into partitions, then sorts those
+algorithm quicksort(A, lo, hi) is 
+  if lo >= 0 && hi >= 0 && lo < hi then
+    p := partition(A, lo, hi) 
+    quicksort(A, lo, p) // Note: the pivot is now included
+    quicksort(A, p + 1, hi) 
+
+// Divides array into two partitions
+algorithm partition(A, lo, hi) is 
+  // Pivot value
+  pivot := A[ floor((hi + lo) / 2) ] // The value in the middle of the array
+
+  // Left index
+  i := lo - 1 
+
+  // Right index
+  j := hi + 1
+
+  loop forever 
+    // Move the left index to the right at least once and while the element at 
+    // the left index is less than the pivot 
+    do i := i + 1 while A[i] < pivot 
+    
+    // Move the right index to the left at least once and while the element at
+    // the right index is greater than the pivot 
+    do j := j - 1 while A[j] > pivot 
+
+    // If the indices crossed, return
+    if i ≥ j then return j
+    
+    // Swap the elements at the left and right indices
+    swap A[i] with A[j]
 ```
 
 

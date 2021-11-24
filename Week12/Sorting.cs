@@ -75,10 +75,11 @@ class Sorting {
             }
 
             stopwatch.Stop();
+            string elapsed = stopwatch.Elapsed.TotalMilliseconds.ToString("F4");
             
             verified = Verify(sorted);
 
-            Console.WriteLine($"{test}:\t{stopwatch.Elapsed.TotalMilliseconds} ms\t{verified}");
+            Console.WriteLine($"{test}:\t{elapsed} ms\tSuccess: {verified}");
         }
     }
 
@@ -118,23 +119,6 @@ class Sorting {
         Console.WriteLine();
         foreach (int n in input) { Console.Write($"{n} "); }
         Console.WriteLine("\n");
-    }
-
-    public static void Heapify(int[] input, int count)
-    {
-        /* Helper function to build heap
-         * from array of type int
-         */
-
-        for (int i = 0; i < count; i++) {
-            int index = i;
-            while (index != 0) {
-                int parent = (index - 1) / 2;
-                if (input[index] <= input[parent]) break;
-                Swap(input, index, parent);
-                index = parent;
-            }
-        }
     }
 
     public static int[] BubbleSort(int[] input, bool debug=false)
@@ -217,15 +201,53 @@ class Sorting {
 
         Heapify(A, A.Length);
 
-        for (int i = A.Length - 1; i >= 0; i--) {
-            Swap(A, 0, i);
-            Heapify(A, A.Length - i);
+        int end = A.Length - 1;
+
+        while (end > 0) {
+            Swap(A, 0, end);
+            end--;
+            SiftDown(A, 0, end);
         }
 
         if (debug) Print(A);
 
         return A;
     }
+
+    public static void Heapify(int[] A, int count)
+    {
+        int start = HParent(count - 1);
+
+        while (start >= 0) {
+            SiftDown(A, start, count - 1);
+            start--;
+        }
+    }
+
+    public static void SiftDown(int[] A, int start, int end)
+    {
+        int root = start;
+
+        while (HLeftChild(root) <= end) {
+            int child = HLeftChild(root);
+            int swap = root;
+
+            if (A[swap] < A[child])
+                swap = child;
+            if (child + 1 <= end && A[swap] < A[child + 1])
+                swap = child + 1;
+            if (swap == root)
+                return;
+            else {
+                Swap(A, root, swap);
+                root = swap;
+            }
+        }
+    }
+
+    public static int HParent(int i) { return (i - 1) / 2; }
+    public static int HLeftChild(int i) { return 2 * i + 1; }
+    public static int HRightChild(int i) { return 2 * i + 2; }
 
     public static int[] QuickSort(int[] input, bool debug=false)
     {
