@@ -2,7 +2,9 @@
 
 https://en.wikipedia.org/wiki/Ultimate_tic-tac-toe
 
-*Goals*
+*Language:* Python3
+
+*Goals:*
 - Create playable U3T field
 	+ Tile placement
 	+ Local win-checking
@@ -15,7 +17,7 @@ https://en.wikipedia.org/wiki/Ultimate_tic-tac-toe
 	+ Python: Tkinter
 	+ Worst case: CLI but with pretty colors
 
-*Constraints*
+*Constraints:*
 - Time (4 week project: 2 for game + 2 for 	AI)
 - Learning (Minimax, Monte Carlo Tree-Search Algorithm)
 - Priority given to functional game over functional AI
