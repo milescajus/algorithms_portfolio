@@ -1,5 +1,7 @@
 # Sorting Algorithms
 See code comments for asymptotic analysis.
+
+The pseudocode shown here, based upon which the algorithms were implemented in C#, are primarily sourced from _Essential Algorithms_ by Rod Stephens with the exception of the Heap Sort pseudocode taken from Wikipedia which seems to have been adapted from David Carlson's tutorial at St Vincent College.
 ## Bubble Sort
 ### Description
 Bubble Sort passes through the array and compare adjacent elements, swapping them if the lower element is larger than the upper element in the pair. This is repeated until the larger element has 'bubbled' its way to its correctly sorted position.
