@@ -23,7 +23,7 @@ class Searching {
         int[] data = new int[474];
         string[] tests = {"Linear Search",
                           "Binary Search",
-                          "Interpolation Search"};
+                          "Inter~ Search"};
 
         // Determine debug flag
         if (args.Length != 0) {
@@ -47,31 +47,31 @@ class Searching {
         foreach (string test in tests) {
             bool verified;
             int result;
-            int find = 0;
+            int find = 99;
 
             stopwatch = Stopwatch.StartNew();
 
             switch(test) {
                 case "Linear Search":
-                    result = LinearSearch(data, find, debug);
+                    result = LinearSearch(sorted, find, debug);
                     break;
                 case "Binary Search":
                     result = BinarySearch(sorted, find, debug);
                     break;
-                case "Interpolation Search":
+                case "Inter~ Search":
                     result = InterpolationSearch(sorted, find, debug);
                     break;
                 default:
-                    result = data[0];
+                    result = -1;
                     break;
             }
 
             stopwatch.Stop();
             string elapsed = stopwatch.Elapsed.TotalMilliseconds.ToString("F4");
             
-            verified = result == 0;
+            verified = find == sorted[result];
 
-            Console.WriteLine($"{test}:\t{elapsed} ms\tSuccess: {verified}");
+            Console.WriteLine($"{test}:\t{elapsed} ms\tSuccess: {verified}\t Found at index {result}");
         }
     }
 
@@ -95,24 +95,25 @@ class Searching {
 
         for (int i = 0; i < data.Length; i++) {
             if (data[i] == find)
-                return data[i];
+                return i;
         }
 
-        return data[0];
+        return -1;
     }
 
     public static int BinarySearch(int[] data, int find, bool debug=false)
     {
         /* Binary Search
-         * Best Runtime: O()
-         * Worst Runtime: O()
+         * Best Runtime: O(1)
+         * Worst Runtime: O(log n)
          */
 
         int left = 0;
         int right = data.Length - 1;
+        int m;
 
         while (left <= right) {
-            int m = (left + right) / 2;
+            m = (left + right) / 2;
             if (data[m] < find)
                 left = m + 1;
             else if (data[m] > find)
@@ -131,6 +132,21 @@ class Searching {
          * Worst Runtime: O(n)
          */
 
-        return data[0];
+        int left = 0;
+        int right = data.Length - 1;
+        int pos;
+
+        while (left <= right && find >= data[left] && find <= data[right]) {
+            pos = left + ((find - data[left]) * (right - left) / (data[right] - data[left]));
+
+            if (data[pos] < find)
+                left = pos + 1;
+            else if (data[pos] > find)
+                right = pos - 1;
+            else
+                return pos;
+        }
+
+        return -1;
     }
 }

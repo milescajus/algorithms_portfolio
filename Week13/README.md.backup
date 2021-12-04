@@ -3,6 +3,7 @@ See code comments for asymptotic analysis.
 
 ## Linear Search
 ### Description
+Sequentially checks all items in an array to see if they match the search term.
 ### Pseudocode
 ```
 Begin
@@ -16,6 +17,7 @@ End
 
 ## Binary Search
 ### Description
+Relies on a pre-sorted array. Breaks down the array into two halves around a midpoint, first checking the midpoint to see if it matches the search term, then discarding the half of the array that does not contain the search term (determined by whether the midpoint is smaller or larger than the term). This process is repeated until the midpoint matches the search term.
 ### Pseudocode
 ```
 function binary_search(A, n, T) is
@@ -35,6 +37,14 @@ function binary_search(A, n, T) is
 
 ## Interpolation Search
 ### Description
+Similar to binary search, interpolation search also progressively reduces the search space, but chooses the key to compare by interpolating the edges of the search space with the key being sought.
 ### Pseudocode
 ```
+1) In a loop, calculate the value of “pos” using the probe position formula.
+2) If there is a match, return the index of the item, and exit.
+3) If the item is less than the arr[pos], calculate the probe position of the left sub-array. Otherwise calculate the same in the right sub-array.
+4) Repeat until a match is found or the sub-array reduces to zero.
 ```
+
+## Summary
+Linear search has the advantage of not requiring pre-sorted data, but is potentially the slowest as its worst-case scenario involves checking every element of the array with no deduction or comparison (O(n)). The other two searching algorithms use the sought key in comparison with the search space to more quickly traverse the array and find the matching term. Binary search always chooses the midpoint of the (sub-)array, whereas interpolation search chooses comparison values based on the sought key. This works best when the data being searched is uniformly distributed.
