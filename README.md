@@ -21,3 +21,6 @@ Week 11
 
 Week 12
 - added Sorting assignment, demonstrating various sorting algorithms
+
+Week 14
+- added Searching assignment, demonstrating various searching algorithms
