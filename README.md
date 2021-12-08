@@ -24,3 +24,4 @@ Week 12
 
 Week 14
 - added Searching assignment, demonstrating various searching algorithms
+- added final project, U3T: still WIP
