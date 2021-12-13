@@ -1,11 +1,11 @@
 ## Final: Ultimate Tic-Tac-Toe
 
 ### Progress
-- successfully implemented classic TTT with terminal interface, complete with win-checking but no AI opponent; this will provide the logical basis for the game
+- successfully implemented multiplayer U3T with improved terminal interface, complete with proper win-checking and playfield selection
+- added singleplayer mode with very rudimentary opponent, simply randomly choosing moves
 
 ### Next Steps
-- extrapolate TTT to U3T game field
-- improve user interface
+- improve singleplayer opponent
 
 ### Concept
 
