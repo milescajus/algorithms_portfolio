@@ -2,10 +2,10 @@
 
 ### Progress
 - successfully implemented multiplayer U3T with improved terminal interface, complete with proper win-checking and playfield selection
-- added singleplayer mode with very rudimentary opponent, simply randomly choosing moves
+- implemented better singleplayer opponent, able to win subgames and lookahead when choosing a playfield itself
 
 ### Next Steps
-- improve singleplayer opponent
+- further improve singleplayer opponent by avoiding sending the player to advantageous positions
 
 ### Concept
 
@@ -27,7 +27,7 @@ https://en.wikipedia.org/wiki/Ultimate_tic-tac-toe
 	+ Worst case: CLI but with pretty colors
 
 *Constraints:*
-- Time (4 week project: 2 for game + 2 for 	AI)
+- Time (4 week project: 2 for game + 2 for AI)
 - Learning (Minimax, Monte Carlo Tree-Search Algorithm)
 - Priority given to functional game over functional AI
 
