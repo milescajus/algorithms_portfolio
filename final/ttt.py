@@ -26,7 +26,7 @@ class Game:
                 move = int(input("Invalid move, try again: ")) - 1
 
         self.grid[move] = player
-        if self.check_win(self.grid):
+        if self.check_win():
             self.grid = [player for i in range(9)]
         return move
 
