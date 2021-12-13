@@ -42,19 +42,22 @@ class Game:
         return False
 
     def winning_seq(self):
+        # check if any win sequence is one move away from completion
         for seq in self.win_seq:
-            # check if any sequence is one move away from completion
-            if [self.grid[n] for n in seq].count(" ") == 1:
+            grid_seq = [self.grid[n] for n in seq]
+
+            if len(set(grid_seq)) == 2 and grid_seq.count(" ") == 1:
                 return seq
 
         return None
 
     def best_move(self):
+        # check if any player has a near-win
         w_seq = self.winning_seq()      # looks like [0, 1, 2] or None
         if w_seq is not None:           # there exists a winning move
             for n in w_seq:
                 if self.grid[n] == " ":
-                    return n
+                    return n            # could be offensive or defensive
 
         # build list of next best moves and return first valid
         corners = sample([n for n in sample([0, 2], 2)] + [n for n in sample([6, 8], 2)], 2)
