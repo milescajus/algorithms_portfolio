@@ -1,5 +1,5 @@
 from random import randrange
-from random import shuffle
+from random import sample
 
 
 class Game:
@@ -12,6 +12,7 @@ class Game:
 
     def make_move(self, player):
         move = -1
+
         if player == self.player[0] and not self.multiplayer:
             # player is 'O' and must be controlled by code
             move = self.best_move()
@@ -20,6 +21,7 @@ class Game:
             move = int(input("Make a move: ")) - 1
             while not (move in range(len(self.grid)) and self.grid[move] == " "):
                 move = int(input("Invalid move, try again: ")) - 1
+
         self.grid[move] = player
         if self.check_win(self.grid):
             self.grid = [player for i in range(9)]
@@ -35,28 +37,26 @@ class Game:
         return False
 
     def best_move(self):
-        grid = self.grid
-        corners = shuffle([shuffle([0, 2]), shuffle([6, 8])])
-        strat = [n for n in corners] + [4] + shuffle([1, 3, 5, 7])  # list of strategic moves in decreasing priority
-        move = -1
+        corners = sample([n for n in sample([0, 2], 2)] + [n for n in sample([6, 8], 2)], 2)
+        strat = [n for n in corners] + [4] + sample([1, 3, 5, 7], 4)  # list of strategic moves in decreasing priority
 
         # brute force check for winning moves
-        for tile in grid:
+        for idx, tile in enumerate(self.grid):
             if tile == " ":
-                tile = self.player[0]
-                if self.check_win(grid):
+                self.grid[idx] = self.player[0]
+                would_win = self.check_win(self.grid)
+                self.grid[idx] = " "
+
+                if would_win:
                     # this move would win, return immediately
-                    return move
-                else:
-                    tile = " "
-                    continue
+                    return idx
 
-        # no winning moves found, choose from priority list
-        for i in range(len(strat)):
-            if grid[i] == " ":
-                return strat[i]
+        # no winning moves found, choose next best from strategy list
+        for n in strat:
+            if self.grid[n] == " ":
+                return n
 
-        return move
+        return None
 
     def print(self):
         for i in range(len(self.grid)):
