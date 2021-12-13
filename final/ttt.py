@@ -106,12 +106,8 @@ class Ultimate:
                 print()
             print()
 
-    def is_full(self, field):
-        # returns if a field (subgame) is full, a.k.a. won
-        uniform = len(set(self.game_grid[field].grid)) == 1
-        full = uniform and self.game_grid[field].grid[0] != " "
-
-        return full
+    def is_full(self, n):
+        return self.game_grid[n].count(" ") == 0     # no tiles are empty, i.e. field is full
 
     def best_move(self):
         for playfield in self.game_grid:
@@ -157,7 +153,8 @@ class Ultimate:
 
     def check_win(self):
         for seq in self.win_seq:
-            if len(set([self.is_full(n) for n in seq])) == 1:
+            # if seq exists that is entirely full, win has occurred
+            if [self.is_full(n) for n in seq].count(False) == 0:
                 return True
 
         return False
