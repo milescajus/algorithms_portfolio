@@ -9,6 +9,9 @@ class Game:
         self.grid = [" " for i in range(9)]
         self.player = ["\033[91mO\033[0m", "\033[92mX\033[0m"]
         self.multiplayer = multiplayer
+        self.win_seq = [[0, 1, 2], [3, 4, 5], [6, 7, 8],
+                        [0, 3, 6], [1, 4, 7], [2, 5, 8],
+                        [0, 4, 8], [2, 4, 6]]
 
     def make_move(self, player):
         move = -1
@@ -27,31 +30,33 @@ class Game:
             self.grid = [player for i in range(9)]
         return move
 
-    def check_win(self, grid):
-        for seq in [[0, 1, 2], [3, 4, 5], [6, 7, 8],
-                    [0, 3, 6], [1, 4, 7], [2, 5, 8],
-                    [0, 4, 8], [2, 4, 6]]:
-            # check for wins
-            if len(set([grid[n] for n in seq])) == 1 and grid[seq[0]] != " ":
+    def check_win(self):
+        for seq in self.win_seq:
+            # check for completed winning sequence
+            if len(set([self.grid[n] for n in seq])) == 1 and self.grid[seq[0]] != " ":
                 return True
+
         return False
 
+    def winning_seq(self):
+        for seq in self.win_seq:
+            # check if any sequence is one move away from completion
+            if [self.grid[n] for n in seq].count(" ") == 1:
+                return seq
+
+        return None
+
     def best_move(self):
+        w_seq = self.winning_seq()      # looks like [0, 1, 2] or None
+        if w_seq is not None:           # there exists a winning move
+            for n in w_seq:
+                if self.grid[n] == " ":
+                    return n
+
+        # build list of next best moves and return first valid
         corners = sample([n for n in sample([0, 2], 2)] + [n for n in sample([6, 8], 2)], 2)
         strat = [n for n in corners] + [4] + sample([1, 3, 5, 7], 4)  # list of strategic moves in decreasing priority
 
-        # brute force check for winning moves
-        for idx, tile in enumerate(self.grid):
-            if tile == " ":
-                self.grid[idx] = self.player[0]
-                would_win = self.check_win(self.grid)
-                self.grid[idx] = " "
-
-                if would_win:
-                    # this move would win, return immediately
-                    return idx
-
-        # no winning moves found, choose next best from strategy list
         for n in strat:
             if self.grid[n] == " ":
                 return n
@@ -73,6 +78,9 @@ class Ultimate:
         self.turn = True
         self.player = ["\033[91mO\033[0m", "\033[92mX\033[0m"]
         self.playfield = 0
+        self.win_seq = [[0, 1, 2], [3, 4, 5], [6, 7, 8],
+                        [0, 3, 6], [1, 4, 7], [2, 5, 8],
+                        [0, 4, 8], [2, 4, 6]]
 
     def print(self, fields=False):
         print("\033[2J\033[H", end='')
@@ -95,10 +103,18 @@ class Ultimate:
                 print()
             print()
 
+    def best_move(self):
+        # TODO: IMPLEMENT WIN LOOKAHEAD
+        for i in range(len(self.game_grid)):
+            playfield = randrange(len(self.game_grid))
+            # check if moving here would allow a winning move
+            return playfield
+        return None
+
     def get_valid_playfield(self):
         if not self.turn and not self.multiplayer:
             # player is 'O' and must be controlled by code
-            playfield = randrange(len(self.game_grid))
+            playfield = self.best_move()
         else:
             # either player is 'X' which is the user, or it is multiplayer mode
             playfield = int(input("Choose a playfield: ")) - 1
@@ -132,10 +148,7 @@ class Ultimate:
         print("Congratulations", self.player[not self.turn] + '!')  # congratulate the previous player as they actually won
 
     def check_win(self):
-        for seq in [[0, 1, 2], [3, 4, 5], [6, 7, 8],
-                    [0, 3, 6], [1, 4, 7], [2, 5, 8],
-                    [0, 4, 8], [2, 4, 6]]:
-
+        for seq in self.win_seq:
             if len(set([self.game_grid[n].grid[0] for n in seq])) == 1 and self.game_grid[seq[0]].grid[0] != " ":
                 self.did_win = self.game_grid[seq[0]]
                 return True
