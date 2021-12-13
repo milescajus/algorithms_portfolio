@@ -38,7 +38,7 @@ class Game:
 
     def print(self):
         for i in range(len(self.grid)):
-            print("[" + self.grid[i] + "]", end="\n" if i % 3 == 2 else "")                         # print self.grid
+            print("[" + self.grid[i] + "]", end="\n" if i % 3 == 2 else "")
 
 
 class Ultimate:
@@ -55,7 +55,7 @@ class Ultimate:
         self.playfield = 0
 
     def print(self, fields=False):
-        print("\033[2J\033[H", end='')  # clear screen
+        print("\033[2J\033[H", end='')
         print("Mode:", "Multi-player" if self.multiplayer else "Single-player")
         print("Turn:", self.player[self.turn], '\n')
 
