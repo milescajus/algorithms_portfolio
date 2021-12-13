@@ -26,8 +26,11 @@ class Game:
                 move = int(input("Invalid move, try again: ")) - 1
 
         self.grid[move] = player
+
         if self.check_win():
+            # subgame won, fill the field with winner
             self.grid = [player for i in range(9)]
+
         return move
 
     def check_win(self):
@@ -103,13 +106,20 @@ class Ultimate:
                 print()
             print()
 
+    def is_full(self, field):
+        # returns if a field (subgame) is full, a.k.a. won
+        uniform = len(set(self.game_grid[field].grid)) == 1
+        full = uniform and self.game_grid[field].grid[0] != " "
+
+        return full
+
     def best_move(self):
-        # TODO: IMPLEMENT WIN LOOKAHEAD
-        for i in range(len(self.game_grid)):
-            playfield = randrange(len(self.game_grid))
-            # check if moving here would allow a winning move
-            return playfield
-        return None
+        for playfield in self.game_grid:
+            if playfield.winning_seq() is not None:
+                # check if moving here would allow a winning move
+                return playfield
+
+        return randrange(len(self.game_grid))
 
     def get_valid_playfield(self):
         if not self.turn and not self.multiplayer:
@@ -119,9 +129,7 @@ class Ultimate:
             # either player is 'X' which is the user, or it is multiplayer mode
             playfield = int(input("Choose a playfield: ")) - 1
 
-        uniform = len(set(self.game_grid[playfield].grid)) == 1
-        full = uniform and self.game_grid[playfield].grid[0] != " "
-        valid = playfield in range(len(self.game_grid)) and not full
+        valid = playfield in range(len(self.game_grid)) and not self.is_full(playfield)
 
         if not valid:
             print("Invalid playfield, try again.\n")
@@ -137,11 +145,11 @@ class Ultimate:
         while not self.check_win():
             self.print()
 
-            if len(set(self.game_grid[self.playfield].grid)) == 1 and self.game_grid[self.playfield].grid[0] != " ":
-                # next move is at 'full' game, player gets to choose next field
+            if self.is_full(self.playfield):  # next move is at 'full' game, player gets to choose next field
                 self.playfield = self.get_valid_playfield()
 
             self.playfield = self.game_grid[self.playfield].make_move(self.player[self.turn])
+
             self.turn = not self.turn
 
         self.print()
@@ -149,9 +157,9 @@ class Ultimate:
 
     def check_win(self):
         for seq in self.win_seq:
-            if len(set([self.game_grid[n].grid[0] for n in seq])) == 1 and self.game_grid[seq[0]].grid[0] != " ":
-                self.did_win = self.game_grid[seq[0]]
+            if len(set([self.is_full(n) for n in seq])) == 1:
                 return True
+
         return False
 
 
