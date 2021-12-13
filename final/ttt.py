@@ -62,7 +62,7 @@ class Game:
                     return n            # could be offensive or defensive
 
         # build list of next best moves and return first valid
-        corners = sample([n for n in sample([0, 2], 2)] + [n for n in sample([6, 8], 2)], 2)
+        corners = sample([n for n in sample([0, 2], 2)] + [n for n in sample([6, 8], 2)], 4)
         strat = [n for n in corners] + [4] + sample([1, 3, 5, 7], 4)  # list of strategic moves in decreasing priority
 
         for n in strat:
