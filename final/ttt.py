@@ -2,6 +2,10 @@ from random import randrange
 
 
 class Game:
+    """
+    NOTE: INPUT IS NOW 1-9 WHICH GETS CORRECTED TO INDEX FORM 0-8
+    """
+
     def __init__(self, multiplayer=True):
         self.grid = [" " for i in range(9)]
         self.player = ["\033[91mO\033[0m", "\033[92mX\033[0m"]
@@ -14,9 +18,9 @@ class Game:
             while not (move in range(len(self.grid)) and self.grid[move] == " "):
                 move = randrange(len(self.grid))
         else:
-            move = int(input("Make a move: "))
+            move = int(input("Make a move: ")) - 1
             while not (move in range(len(self.grid)) and self.grid[move] == " "):
-                move = int(input("Invalid move, try again: "))
+                move = int(input("Invalid move, try again: ")) - 1
         self.grid[move] = player
         if self.check_win():
             self.grid = [player for i in range(9)]
@@ -38,6 +42,10 @@ class Game:
 
 
 class Ultimate:
+    """
+    NOTE: INPUT IS NOW 1-9 WHICH GETS CORRECTED TO INDEX FORM 0-8
+    """
+
     def __init__(self):
         print("\033[2J\033[H", end='')  # clear screen
         self.multiplayer = True if int(input("[1] Single-player\n[2] Multi-player\n: ")) == 2 else False
@@ -58,7 +66,7 @@ class Ultimate:
                 for g in self.game_grid[s[0]:s[1]]:
                     for e in g.grid[ss[0]:ss[1]]:
                         if fields:
-                            print('[' + str(self.game_grid.index(g)) + ']', end='')
+                            print('[' + str(self.game_grid.index(g) + 1) + ']', end='')
                         elif self.game_grid.index(g) == self.playfield:
                             print("\033[93m[\033[0m" + e + "\033[93m]\033[0m", end='')
                         else:
@@ -68,14 +76,21 @@ class Ultimate:
             print()
 
     def get_valid_playfield(self):
-        playfield = int(input("Choose a playfield: "))
+        if not self.turn and not self.multiplayer:
+            playfield = randrange(len(self.game_grid))
+        else:
+            playfield = int(input("Choose a playfield: ")) - 1
+
         uniform = len(set(self.game_grid[playfield].grid)) == 1
         full = uniform and self.game_grid[playfield].grid[0] != " "
 
         valid = playfield in range(len(self.game_grid)) and not full
 
         while not valid:
-            playfield = int(input("Invalid playfield, try again: "))
+            if not self.turn and not self.multiplayer:
+                playfield = randrange(len(self.game_grid))
+            else:
+                playfield = int(input("Invalid playfield, try again: ")) - 1
 
         return playfield
 
