@@ -13,12 +13,12 @@ class Game:
                         [0, 3, 6], [1, 4, 7], [2, 5, 8],
                         [0, 4, 8], [2, 4, 6]]
 
-    def make_move(self, player):
+    def make_move(self, player, full_games):
         move = -1
 
         if player == self.player[0] and not self.multiplayer:
             # player is 'O' and must be controlled by code
-            move = self.best_move()
+            move = self.best_move(full_games)
         else:
             # either player is 'X' which is the user, or it is multiplayer mode
             move = int(input("Make a move: ")) - 1
@@ -51,12 +51,14 @@ class Game:
 
         return None
 
-    def best_move(self):
+    def best_move(self, full_games):
+        # TODO: AVOID NEXT PLAYFIELD BEING NEAR-WIN
+
         # check if any player has a near-win
         w_seq = self.winning_seq()      # looks like [0, 1, 2] or None
         if w_seq is not None:           # there exists a winning move
             for n in w_seq:
-                if self.grid[n] == " ":
+                if self.grid[n] == " " and n not in full_games:
                     return n            # could be offensive or defensive
 
         # build list of next best moves and return first valid
@@ -64,7 +66,7 @@ class Game:
         strat = [n for n in corners] + [4] + sample([1, 3, 5, 7], 4)  # list of strategic moves in decreasing priority
 
         for n in strat:
-            if self.grid[n] == " ":
+            if self.grid[n] == " " and n not in full_games:
                 return n
 
         return None
@@ -110,7 +112,10 @@ class Ultimate:
             print()
 
     def is_full(self, n):
-        return self.game_grid[n].grid.count(" ") == 0     # no tiles are empty, i.e. field is full
+        return self.game_grid[n].grid.count(" ") == 0       # no tiles are empty -> field is full
+
+    def is_uniform(self, n):
+        return len(set(self.game_grid[n].grid)) == 1        # all tiles are the same -> field is either empty or won
 
     def best_move(self):
         for idx, g in enumerate(self.game_grid):
@@ -147,7 +152,12 @@ class Ultimate:
             if self.is_full(self.playfield):  # next move is at 'full' game, player gets to choose next field
                 self.playfield = self.get_valid_playfield()
 
-            self.playfield = self.game_grid[self.playfield].make_move(self.player[self.turn])
+            full_games = []     # to pass to Game() for opponent to avoid
+            for i in range(len(self.game_grid)):
+                if self.is_full(i):
+                    full_games.append(i)
+
+            self.playfield = self.game_grid[self.playfield].make_move(self.player[self.turn], full_games)
 
             self.turn = not self.turn
 
@@ -156,9 +166,10 @@ class Ultimate:
 
     def check_win(self):
         for seq in self.win_seq:
-            # if seq exists that is entirely full, win has occurred
-            if [self.is_full(n) for n in seq].count(False) == 0:
-                return True
+            # if seq exists that is entirely full and uniform, win has occurred
+            if [self.is_full(n) for n in seq].count(False) == 0 and [self.is_uniform(n) for n in seq].count(False) == 0:
+                if len(set([g.grid[0] for g in self.game_grid])) == 1:  # sequence itself is uniform (i.e. not X-X-O)
+                    return True
 
         return False
 
