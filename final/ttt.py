@@ -107,13 +107,13 @@ class Ultimate:
             print()
 
     def is_full(self, n):
-        return self.game_grid[n].count(" ") == 0     # no tiles are empty, i.e. field is full
+        return self.game_grid[n].grid.count(" ") == 0     # no tiles are empty, i.e. field is full
 
     def best_move(self):
-        for playfield in self.game_grid:
-            if playfield.winning_seq() is not None:
+        for idx, g in enumerate(self.game_grid):
+            if g.winning_seq() is not None:
                 # check if moving here would allow a winning move
-                return playfield
+                return idx
 
         return randrange(len(self.game_grid))
 
