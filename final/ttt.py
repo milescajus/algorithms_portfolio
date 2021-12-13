@@ -96,8 +96,6 @@ class Ultimate:
             print()
 
     def get_valid_playfield(self):
-        """ maybe this method should be recursive? """
-
         if not self.turn and not self.multiplayer:
             # player is 'O' and must be controlled by code
             playfield = randrange(len(self.game_grid))
@@ -109,11 +107,9 @@ class Ultimate:
         full = uniform and self.game_grid[playfield].grid[0] != " "
         valid = playfield in range(len(self.game_grid)) and not full
 
-        while not valid:
-            if not self.turn and not self.multiplayer:
-                playfield = randrange(len(self.game_grid))
-            else:
-                playfield = int(input("Invalid playfield, try again: ")) - 1
+        if not valid:
+            print("Invalid playfield, try again.\n")
+            return self.get_valid_playfield()
 
         return playfield
 
