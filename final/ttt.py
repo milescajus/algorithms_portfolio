@@ -1,10 +1,9 @@
 from random import randrange
+from random import shuffle
 
 
 class Game:
-    """
-    NOTE: INPUT IS NOW 1-9 WHICH GETS CORRECTED TO INDEX FORM 0-8
-    """
+    """ NOTE: INPUT IS NOW 1-9 WHICH GETS CORRECTED TO INDEX FORM 0-8 """
 
     def __init__(self, multiplayer=True):
         self.grid = [" " for i in range(9)]
@@ -14,27 +13,50 @@ class Game:
     def make_move(self, player):
         move = -1
         if player == self.player[0] and not self.multiplayer:
-            # AI CODE (TODO: REPLACE RANDOM APPROACH)
-            while not (move in range(len(self.grid)) and self.grid[move] == " "):
-                move = randrange(len(self.grid))
+            # player is 'O' and must be controlled by code
+            move = self.best_move()
         else:
+            # either player is 'X' which is the user, or it is multiplayer mode
             move = int(input("Make a move: ")) - 1
             while not (move in range(len(self.grid)) and self.grid[move] == " "):
                 move = int(input("Invalid move, try again: ")) - 1
         self.grid[move] = player
-        if self.check_win():
+        if self.check_win(self.grid):
             self.grid = [player for i in range(9)]
         return move
 
-    def check_win(self):
+    def check_win(self, grid):
         for seq in [[0, 1, 2], [3, 4, 5], [6, 7, 8],
                     [0, 3, 6], [1, 4, 7], [2, 5, 8],
                     [0, 4, 8], [2, 4, 6]]:
             # check for wins
-            if len(set([self.grid[n] for n in seq])) == 1 and self.grid[seq[0]] != " ":
-                self.did_win = self.grid[seq[0]]
+            if len(set([grid[n] for n in seq])) == 1 and grid[seq[0]] != " ":
                 return True
         return False
+
+    def best_move(self):
+        grid = self.grid
+        corners = shuffle([shuffle([0, 2]), shuffle([6, 8])])
+        strat = [n for n in corners] + [4] + shuffle([1, 3, 5, 7])  # list of strategic moves in decreasing priority
+        move = -1
+
+        # brute force check for winning moves
+        for tile in grid:
+            if tile == " ":
+                tile = self.player[0]
+                if self.check_win(grid):
+                    # this move would win, return immediately
+                    return move
+                else:
+                    tile = " "
+                    continue
+
+        # no winning moves found, choose from priority list
+        for i in range(len(strat)):
+            if grid[i] == " ":
+                return strat[i]
+
+        return move
 
     def print(self):
         for i in range(len(self.grid)):
@@ -42,9 +64,7 @@ class Game:
 
 
 class Ultimate:
-    """
-    NOTE: INPUT IS NOW 1-9 WHICH GETS CORRECTED TO INDEX FORM 0-8
-    """
+    """ NOTE: INPUT IS NOW 1-9 WHICH GETS CORRECTED TO INDEX FORM 0-8 """
 
     def __init__(self):
         print("\033[2J\033[H", end='')  # clear screen
@@ -76,14 +96,17 @@ class Ultimate:
             print()
 
     def get_valid_playfield(self):
+        """ maybe this method should be recursive? """
+
         if not self.turn and not self.multiplayer:
+            # player is 'O' and must be controlled by code
             playfield = randrange(len(self.game_grid))
         else:
+            # either player is 'X' which is the user, or it is multiplayer mode
             playfield = int(input("Choose a playfield: ")) - 1
 
         uniform = len(set(self.game_grid[playfield].grid)) == 1
         full = uniform and self.game_grid[playfield].grid[0] != " "
-
         valid = playfield in range(len(self.game_grid)) and not full
 
         while not valid:
