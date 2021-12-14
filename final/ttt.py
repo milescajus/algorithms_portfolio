@@ -42,6 +42,7 @@ class Game:
         return False
 
     def winning_seq(self):
+        # TODO: RETURN MULTIPLE SEQS
         # check if any win sequence is one move away from completion
         for seq in self.win_seq:
             grid_seq = [self.grid[n] for n in seq]
@@ -69,7 +70,10 @@ class Game:
             if self.grid[n] == " " and n not in full_games:
                 return n
 
-        return None
+        # if no good moves are found, run through the strat list once more while allowing a move to a full game
+        for n in strat:
+            if self.grid[n] == " ":
+                return n
 
     def print(self):
         for i in range(len(self.grid)):
@@ -168,7 +172,7 @@ class Ultimate:
         for seq in self.win_seq:
             # if seq exists that is entirely full and uniform, win has occurred
             if [self.is_full(n) for n in seq].count(False) == 0 and [self.is_uniform(n) for n in seq].count(False) == 0:
-                if len(set([g.grid[0] for g in self.game_grid])) == 1:  # sequence itself is uniform (i.e. not X-X-O)
+                if len(set([self.game_grid[n].grid[0] for n in seq])) == 1:  # sequence itself is uniform (i.e. not X-X-O)
                     return True
 
         return False
