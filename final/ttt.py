@@ -71,6 +71,7 @@ class Game:
                 return n
 
         # if no good moves are found, run through the strat list once more while allowing a move to a full game
+        # TODO: run through winning moves again while allowing a move to a full game -> recursion?
         for n in strat:
             if self.grid[n] == " ":
                 return n
