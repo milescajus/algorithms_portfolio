@@ -100,7 +100,7 @@ class Ultimate:
         print("Mode:", "Multi-player" if self.multiplayer else "Single-player")
         print("Turn:", self.player[self.turn], '\n')
 
-        splits = ((0, 3), (3, 6), (6, 9))
+        splits = ((6, 9), (3, 6), (0, 3))
 
         for s in splits:
             for ss in splits:
