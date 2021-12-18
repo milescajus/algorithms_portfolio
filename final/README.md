@@ -1,8 +1,16 @@
 ## Final: Ultimate Tic-Tac-Toe
 
+<img src="https://user-images.githubusercontent.com/80205080/146646153-b52d8ba0-afd9-4948-ada9-cf30f476c834.mp4" alt="demo" width="400"/>
+
+### How To Run
+```console
+$ python3 ttt.py
+```
+
 ### Progress
 - successfully implemented multiplayer U3T with improved terminal interface, complete with proper win-checking and playfield selection
 - implemented better singleplayer opponent, able to win subgames and lookahead when choosing a playfield itself
+- switched to numpad-layout input
 
 ### Next Steps
 - further improve singleplayer opponent by avoiding sending the player to advantageous positions
